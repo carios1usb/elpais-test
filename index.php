@@ -5,7 +5,9 @@ include 'models/my_patient.php';
 
 $patient_model = new my_patient();
 
-$patients = $patient_model->list_all();
+$patients = $patient_model->getPatientByAge("50");
+
+$quantityByAge=$patient_model->getCountByAge();
 
 ?>
 
@@ -28,31 +30,48 @@ $patients = $patient_model->list_all();
 
         <p>
             <label for="patient_filter">Filter by Name</label>
-            <input type="text" name="patient_filter" />
+            <input type="text" id="searchPatient" name="patient_filter" />
         </p>
 
         <p>
             <label for="patient_filter">Number of patients grouped by age</label>
             <ul>
                 <!-- Punto 3 Listar numero de paciente por edades -->
-                <li><span>Age:  </span><span>Patients quantity: </span></li>
+                <?php if ($quantityByAge): ?>
+                    <?php foreach($quantityByAge as $age): ?>
+                        <li><span>Age:<?php echo $age->patient_age; ?>  </span><span>Patients quantity:<?php echo $age->quantity; ?></span></li>
+                    <?php endforeach; ?>
+                <?php endif ?>
             </ul>
         </p>
 
         <div class="row">
             <div class="col-xs-4">Name</div>
-            <div class="col-xs-4">Age</div>
+            <div class="col-xs-4 hidden-xs">Age</div>
             <div class="col-xs-4">Phone</div>
         </div>
 
+        <!-- Se muestra un mensaje si no se ecnontró el paciente por nombre -->
+        <div id="message" class="col-md-12 text-center" style="display: none;">
+            <hr>
+            <span>Sorry, this patient was not found in the list</span>
+        </div>
+
         <!-- Punto 4 Esconde la columna Age para móviles -->
-        <?php foreach($patients as $patient): ?>
-            <div class="row">
-                <div class="col-xs-4"><?php echo $patient->patient_name; ?></div>
-                <div class="col-xs-4"><?php echo $patient->patient_age; ?></div>
-                <div class="col-xs-4"><?php echo $patient->patient_phone; ?></div>
+        <?php if ($patients["isList"]==1): ?>    
+            <?php foreach($patients["list"] as $patient): ?>
+                <div class="row patient">
+                    <div class="col-xs-4 patientName"><?php echo $patient->patient_name; ?></div>
+                    <div class="col-xs-4 hidden-xs"><?php echo $patient->patient_age; ?></div>
+                    <div class="col-xs-4"><?php echo $patient->patient_phone; ?></div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-md-12 text-center" style="display: block;">
+                <hr>
+                <span>No data added</span>
             </div>
-        <?php endforeach; ?>
+        <?php endif ?>
 
     </div>
 
