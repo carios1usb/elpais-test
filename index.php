@@ -21,6 +21,7 @@ $quantityByAge=$patient_model->getCountByAge();
     <meta name="description" content="El País programming test">
     <meta name="author" content="assistrx-dw">
     <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
 
@@ -35,11 +36,11 @@ $quantityByAge=$patient_model->getCountByAge();
 
         <p>
             <label for="patient_filter">Number of patients grouped by age</label>
-            <ul>
+            <ul class="quantityByAge">
                 <!-- Punto 3 Listar numero de paciente por edades -->
                 <?php if ($quantityByAge): ?>
                     <?php foreach($quantityByAge as $age): ?>
-                        <li><span>Age:<?php echo $age->patient_age; ?>  </span><span>Patients quantity:<?php echo $age->quantity; ?></span></li>
+                        <li><span>Age:<b><?php echo $age->patient_age; ?> </b> </span><span>Patients quantity:<b><?php echo $age->quantity; ?></b></span></li>
                     <?php endforeach; ?>
                 <?php endif ?>
             </ul>
